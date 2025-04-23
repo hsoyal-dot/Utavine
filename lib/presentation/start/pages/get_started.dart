@@ -1,13 +1,37 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:utavine/common/basic_app_button.dart';
 import 'package:utavine/core/configs/assets/app_images.dart';
-import 'package:utavine/core/configs/assets/app_vectors.dart';
 import 'package:utavine/core/configs/theme/app_colors.dart';
 import 'package:utavine/presentation/choose_mode/pages/choose_mode_page.dart';
 
-class GetStarted extends StatelessWidget {
+class GetStarted extends StatefulWidget {
   const GetStarted({super.key});
+
+  @override
+  State<GetStarted> createState() => _GetStartedState();
+}
+
+class _GetStartedState extends State<GetStarted> {
+  String _utaText = 'Uta';
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        _utaText = _utaText == 'Uta' ? '  歌' : 'Uta';
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +48,59 @@ class GetStarted extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: SvgPicture.asset(AppVectors.logo),
-                ),
+                // Align(
+                //   alignment: Alignment.topCenter,
+                //   child: Image.asset(AppImages.logo, width: 200, height: 200),
+                // ),
                 const Spacer(),
-                const Text(
-                  'Welcome to Utavine',
-                  style: TextStyle(
-                    fontSize: 45,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.white,
-                  ),
-                  textAlign: TextAlign.left,
+                Row(
+                  children: [
+                    const Text(
+                      'Welcome to ',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.white,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 600),
+                      transitionBuilder: (
+                        Widget child,
+                        Animation<double> animation,
+                      ) {
+                        return SlideTransition(
+                          position: Tween<Offset>(
+                            begin: const Offset(0.0, 1.0),
+                            end: const Offset(0.0, 0.0),
+                          ).animate(animation),
+                          child: ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: Text(
+                        _utaText,
+                        key: ValueKey(_utaText),
+                        style: const TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                      'vine',
+                      style: const TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.white,
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 const Text(

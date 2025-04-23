@@ -1,14 +1,12 @@
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:utavine/presentation/auth/pages/user_authentication.dart';
 import 'package:utavine/presentation/choose_mode/bloc/theme_cubit.dart';
 
 import '../../../common/basic_app_button.dart';
 import '../../../core/configs/assets/app_images.dart';
-import '../../../core/configs/assets/app_vectors.dart';
 import '../../../core/configs/theme/app_colors.dart';
 
 class ChooseModePage extends StatelessWidget {
@@ -31,7 +29,7 @@ class ChooseModePage extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.topCenter,
-                  child: SvgPicture.asset(AppVectors.logo),
+                  child: Image.asset(AppImages.logo, width: 180, height: 180),
                 ),
                 const Spacer(),
                 const Text(
@@ -120,7 +118,7 @@ class ChooseModePage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder:
-                            (BuildContext context) => const ChooseModePage(),
+                            (BuildContext context) => const UserAuthentication(),
                       ),
                     );
                   },

@@ -1,7 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:utavine/core/configs/assets/app_vectors.dart';
+import 'package:utavine/core/configs/assets/app_images.dart';
 import 'package:utavine/presentation/start/pages/get_started.dart';
 
 class SplashPage extends StatelessWidget {
@@ -10,9 +9,12 @@ class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: Column(children: [SvgPicture.asset(AppVectors.logo)]),
+      backgroundColor: Colors.white,
+      splash: Center(
+        child: Image.asset(AppImages.logo, width: 200, height: 200),
+      ),
       duration: 3000,
-      splashTransition: SplashTransition.decoratedBoxTransition,
+      splashTransition: SplashTransition.scaleTransition,
       nextScreen: GetStarted(),
     );
   }
