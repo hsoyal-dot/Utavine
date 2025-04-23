@@ -125,6 +125,7 @@ class _GetStartedState extends State<GetStarted> {
                   },
                   title: 'Get Started',
                   height: 80,
+                  bgColor: AppColors.primary,
                 ),
               ],
             ),

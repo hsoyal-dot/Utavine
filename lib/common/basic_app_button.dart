@@ -4,12 +4,14 @@ import 'package:utavine/core/configs/theme/app_colors.dart';
 class BasicAppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final String title;
-  final double ? height;
+  final Color bgColor;
+  final double? height;
   const BasicAppButton({
     super.key,
     required this.onPressed,
     required this.title,
-    required this.height
+    required this.height,
+    required this.bgColor,
   });
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,9 @@ class BasicAppButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         minimumSize: Size.fromHeight(height ?? 80),
-        backgroundColor: AppColors.primary,
-      ), 
-      child: Text(
-      title,
-      style: const TextStyle(color: AppColors.white),
-    ));
+        backgroundColor: bgColor,
+      ),
+      child: Text(title, style: const TextStyle(color: AppColors.white)),
+    );
   }
 }

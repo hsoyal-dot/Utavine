@@ -124,6 +124,7 @@ class ChooseModePage extends StatelessWidget {
                   },
                   title: 'Done',
                   height: 80,
+                  bgColor: AppColors.primary,
                 ),
               ],
             ),
