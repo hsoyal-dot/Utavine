@@ -3,6 +3,8 @@ import 'package:utavine/common/widgets/appbar/custom_app_bar.dart';
 import 'package:utavine/common/widgets/button/basic_app_button.dart';
 import 'package:utavine/core/configs/assets/app_images.dart';
 import 'package:utavine/core/configs/theme/app_colors.dart';
+import 'package:utavine/presentation/auth/pages/signin_page.dart';
+import 'package:utavine/presentation/auth/pages/signup_page.dart';
 
 class UserAuthentication extends StatelessWidget {
   const UserAuthentication({super.key});
@@ -10,9 +12,10 @@ class UserAuthentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //Back Button
+      appBar: const CustomAppBar(),
       body: Stack(
         children: [
-          const CustomAppBar(),
           Padding(
             padding: const EdgeInsets.all(35.0),
             child: Align(
@@ -43,7 +46,16 @@ class UserAuthentication extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: BasicAppButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (BuildContext context) =>
+                                        const SignUpPage(),
+                              ),
+                            );
+                          },
                           title: 'Register',
                           height: 60,
                           bgColor: AppColors.primary,
@@ -53,7 +65,16 @@ class UserAuthentication extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: BasicAppButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (BuildContext context) =>
+                                        const SignIpPage(),
+                              ),
+                            );
+                          },
                           title: 'Login',
                           height: 60,
                           bgColor: AppColors.lgtGrey,
