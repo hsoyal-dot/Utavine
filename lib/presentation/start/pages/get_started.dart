@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:utavine/common/basic_app_button.dart';
+import 'package:utavine/common/widgets/button/basic_app_button.dart';
 import 'package:utavine/core/configs/assets/app_images.dart';
 import 'package:utavine/core/configs/theme/app_colors.dart';
 import 'package:utavine/presentation/choose_mode/pages/choose_mode_page.dart';
@@ -14,7 +14,7 @@ class GetStarted extends StatefulWidget {
 }
 
 class _GetStartedState extends State<GetStarted> {
-  String _utaText = 'Uta';
+  String _utaText = 'Utavine';
   Timer? _timer;
 
   @override
@@ -22,7 +22,7 @@ class _GetStartedState extends State<GetStarted> {
     super.initState();
     _timer = Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
-        _utaText = _utaText == 'Uta' ? '  歌' : 'Uta';
+        _utaText = _utaText == 'Utavine' ? '歌vine' : 'Utavine';
       });
     });
   }
@@ -47,60 +47,63 @@ class _GetStartedState extends State<GetStarted> {
               ),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Align(
-                //   alignment: Alignment.topCenter,
-                //   child: Image.asset(AppImages.logo, width: 200, height: 200),
-                // ),
                 const Spacer(),
-                Row(
+                Column(
                   children: [
                     const Text(
                       'Welcome to ',
                       style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 600),
-                      transitionBuilder: (
-                        Widget child,
-                        Animation<double> animation,
-                      ) {
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(0.0, 1.0),
-                            end: const Offset(0.0, 0.0),
-                          ).animate(animation),
-                          child: ScaleTransition(
-                            scale: animation,
-                            child: child,
-                          ),
-                        );
-                      },
-                      child: Text(
-                        _utaText,
-                        key: ValueKey(_utaText),
-                        style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'vine',
-                      style: const TextStyle(
-                        fontSize: 30,
+                        fontSize: 45,
                         fontWeight: FontWeight.bold,
                         color: AppColors.white,
                       ),
                       textAlign: TextAlign.left,
                     ),
                   ],
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 600),
+                  transitionBuilder: (
+                    Widget child,
+                    Animation<double> animation,
+                  ) {
+                    final inAnimation = Tween<Offset>(
+                      begin: const Offset(1.0, 0.0),
+                      end: Offset.zero,
+                    ).animate(animation);
+
+                    final outAnimation = Tween<Offset>(
+                      begin: Offset.zero,
+                      end: const Offset(0.0, 0.0),
+                    ).animate(animation);
+
+                    return AnimatedBuilder(
+                      animation: animation,
+                      builder: (context, childWidget) {
+                        final isIncoming = child.key == ValueKey(_utaText);
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: isIncoming ? inAnimation : outAnimation,
+                            child: childWidget,
+                          ),
+                        );
+                      },
+                      child: child,
+                    );
+                  },
+                  child: Text(
+                    _utaText,
+                    key: ValueKey(_utaText),
+                    style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.white,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 const Text(

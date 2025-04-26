@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:utavine/presentation/auth/pages/user_authentication.dart';
 import 'package:utavine/presentation/choose_mode/bloc/theme_cubit.dart';
 
-import '../../../common/basic_app_button.dart';
+import '../../../common/widgets/button/basic_app_button.dart';
 import '../../../core/configs/assets/app_images.dart';
 import '../../../core/configs/theme/app_colors.dart';
 
