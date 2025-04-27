@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1081354023136",
+    "project_id": "utavine-app",
+    "storage_bucket": "utavine-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081354023136:android:332462b35e8b765c46e085",
+        "android_client_info": {
+          "package_name": "com.example.utavine"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbquWDN4mfKeFrgIkuK83dLnws7HhvUrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
