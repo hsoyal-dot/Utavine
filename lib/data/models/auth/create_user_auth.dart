@@ -1,14 +1,12 @@
 class CreateUserAuth {
+  String name;
   String email;
   String password;
-  String name;
-  String phoneNumber;
 
   CreateUserAuth({
-    required this.email,
-    required this.password,
     required this.name,
-    required this.phoneNumber,
+    required this.email,
+    required this.password, required fullName,
   });
   
 }

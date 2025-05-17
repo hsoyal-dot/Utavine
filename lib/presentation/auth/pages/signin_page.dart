@@ -21,9 +21,7 @@ class SignIpPage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const SignUpPage(),
-            ),
+            MaterialPageRoute(builder: (BuildContext context) => SignUpPage()),
           );
         },
       ),

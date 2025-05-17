@@ -52,7 +52,7 @@ class UserAuthentication extends StatelessWidget {
                               MaterialPageRoute(
                                 builder:
                                     (BuildContext context) =>
-                                        const SignUpPage(),
+                                        SignUpPage(),
                               ),
                             );
                           },
