@@ -8,6 +8,7 @@ import 'package:utavine/core/configs/theme/app_theme.dart';
 import 'package:utavine/firebase_options.dart';
 import 'package:utavine/presentation/choose_mode/bloc/theme_cubit.dart';
 import 'package:utavine/presentation/splash/pages/splash.dart';
+import 'package:utavine/service_locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ Future<void> main() async {
             ),
   );
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform); 
+  await initializeDependencies(); 
   runApp(MyApp());
 }
 

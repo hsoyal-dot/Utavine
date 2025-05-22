@@ -50,9 +50,7 @@ class UserAuthentication extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder:
-                                    (BuildContext context) =>
-                                        const SignUpPage(),
+                                builder: (BuildContext context) => SignUpPage(),
                               ),
                             );
                           },
@@ -69,9 +67,7 @@ class UserAuthentication extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder:
-                                    (BuildContext context) =>
-                                        const SignIpPage(),
+                                builder: (BuildContext context) => SignIpPage(),
                               ),
                             );
                           },
