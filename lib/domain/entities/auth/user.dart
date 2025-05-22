@@ -1,12 +1,24 @@
-class UserEntity {
-  String? fullName;
-  String? username;
-  String? email;
+// class UserEntity {
+//   String? fullName;
+//   String? email;
+//   String? password;
 
+
+//   UserEntity({
+//     this.fullName,
+//     this.email,
+//     this.password,
+//   });
+// }
+
+
+
+class UserEntity {
+  final String fullName;
+  final String email;
 
   UserEntity({
-    this.fullName,
-    this.username,
-    this.email,
+    required this.fullName,
+    required this.email,
   });
 }
