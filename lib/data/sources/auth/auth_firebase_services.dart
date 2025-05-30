@@ -6,8 +6,8 @@ import 'package:utavine/data/models/auth/login_user_req.dart';
 import 'package:utavine/domain/entities/auth/user.dart';
 
 abstract class AuthFirebaseServices {
-  Future<Either> signup(CreateUserReq createUserAuth);
-  Future<Either> signin(LoginUserReq loginUserAuth);
+  Future<Either<Failure, UserEntity>> signup(CreateUserReq createUserAuth);
+  Future<Either<Failure, UserEntity>> signin(LoginUserReq loginUserAuth);
 }
 
 class AuthFirebaseServicesImpl extends AuthFirebaseServices {
@@ -26,10 +26,14 @@ class AuthFirebaseServicesImpl extends AuthFirebaseServices {
       final user = credential.user;
 
       if (user != null) {
+        if (!user.emailVerified) {
+          await user.sendEmailVerification();
+        }
         return Right(
           UserEntity(
             fullName: createUserAuth.fullName,
             email: user.email ?? '',
+            emailVerified: user.emailVerified,
           ),
         );
       } else {
@@ -64,9 +68,21 @@ class AuthFirebaseServicesImpl extends AuthFirebaseServices {
       final user = credential.user;
 
       if (user != null) {
-        return Right(UserEntity(fullName: '', email: user.email ?? ''));
+        // if (!user.emailVerified) {
+        //   await FirebaseAuth.instance.signOut();
+        //   return Left(
+        //     ServerFailure('Please verify your email before logging in.'),
+        //   );
+        // }
+        return Right(
+          UserEntity(
+            fullName: '',
+            email: user.email ?? '',
+            emailVerified: user.emailVerified,
+          ),
+        );
       } else {
-        return Left(ServerFailure('Login Failed.'));
+        return Left(ServerFailure('Problem from our side. Sorry for the trouble.'));
       }
     } on FirebaseAuthException catch (e) {
       String errorMessage;
