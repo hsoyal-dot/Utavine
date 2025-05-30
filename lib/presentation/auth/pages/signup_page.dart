@@ -9,7 +9,6 @@ import 'package:utavine/presentation/auth/widgets/user_auth/auth_label.dart';
 import 'package:utavine/presentation/auth/widgets/user_auth/auth_title.dart';
 import 'package:utavine/presentation/auth/widgets/user_auth/footer_navigation.dart';
 import 'package:utavine/presentation/auth/widgets/user_auth/user_input.dart';
-import 'package:utavine/presentation/root/root.dart';
 import 'package:utavine/service_locator.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -28,9 +27,7 @@ class SignUpPage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => SignIpPage(),
-            ),
+            MaterialPageRoute(builder: (BuildContext context) => SignIpPage()),
           );
         },
       ),
@@ -75,14 +72,26 @@ class SignUpPage extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(snackbar);
                     },
                     (r) {
-                      // handling success
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => SignIpPage(),
+                      // handling success and sending verif. email
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Verification email sent. Please check your inbox.',
+                          ),
+                          duration: Duration(seconds: 4),
+                          backgroundColor: AppColors.success,
                         ),
-                        (route) => false,
                       );
+                      Future.delayed(const Duration(seconds: 4), () {
+                        Navigator.pushAndRemoveUntil(
+                          // ignore: use_build_context_synchronously
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => SignIpPage(),
+                          ),
+                          (route) => false,
+                        );
+                      });
                     },
                   );
                 },

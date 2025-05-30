@@ -16,9 +16,11 @@
 class UserEntity {
   final String fullName;
   final String email;
+  final bool emailVerified; 
 
   UserEntity({
     required this.fullName,
     required this.email,
+    required this.emailVerified,
   });
 }
