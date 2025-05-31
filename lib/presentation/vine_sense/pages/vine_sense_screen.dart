@@ -15,7 +15,7 @@ class VineSenseScreen extends StatelessWidget {
       create: (_) => VineSenseBloc()..add(FetchStressLevelEvent()),
       child: Scaffold(
         appBar: CustomAppBar(title: Text(
-          'Vine Sense',
+          'VineSense',
           textAlign: TextAlign.left,
           )),
         body: BlocBuilder<VineSenseBloc, VineSenseState>(
