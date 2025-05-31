@@ -51,7 +51,7 @@ class SignUpPage extends StatelessWidget {
               UserInput(contr: _email),
               const SizedBox(height: 20),
 
-              AuthLabel(text: 'PASSWORD'),
+              AuthLabel(text: 'PASSWORD (8+ characters)'),
               const SizedBox(height: 4),
               UserInput(contr: _password),
               const SizedBox(height: 40),
@@ -68,7 +68,13 @@ class SignUpPage extends StatelessWidget {
                   result.fold(
                     (l) {
                       // handling error
-                      var snackbar = SnackBar(content: Text(l.toString()));
+                      var snackbar = SnackBar(
+                        content: Text(
+                          'Kindly provide valid credentials.',
+                          style: const TextStyle(color: AppColors.white),
+                        ),
+                        backgroundColor: AppColors.danger,
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(snackbar);
                     },
                     (r) {

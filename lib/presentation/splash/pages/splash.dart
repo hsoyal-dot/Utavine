@@ -4,6 +4,7 @@ import 'package:utavine/common/helpers/is_dark_mode.dart';
 import 'package:utavine/core/configs/assets/app_images.dart';
 import 'package:utavine/core/configs/theme/app_theme.dart';
 import 'package:utavine/presentation/start/pages/get_started.dart';
+import 'package:utavine/presentation/vine_sense/pages/vine_sense_screen.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -19,7 +20,8 @@ class SplashPage extends StatelessWidget {
       ),
       duration: 3000,
       splashTransition: SplashTransition.scaleTransition,
-      nextScreen: const GetStarted(),
+      nextScreen: const VineSenseScreen(),
+      // nextScreen: const GetStarted(),
     );
   }
 }
