@@ -1,19 +1,24 @@
+import 'package:utavine/data/models/tracks_data/spotify_song.dart';
+
 abstract class VineSenseState {}
 
-class VineSenseInitialState extends VineSenseState {}
+class VineSenseInitial extends VineSenseState {}
 
-class VineSenseLoadingState extends VineSenseState {}
+class VineSenseLoading extends VineSenseState {}
 
-class VineSenseLoadedState extends VineSenseState {
+class VineSenseLoaded extends VineSenseState {
   final double stressLevel;
-  final List<String> songs;
   final List<String> keywords;
+  final List<SpotifySong> songs;
 
-  VineSenseLoadedState(this.stressLevel, this.keywords, {required this.songs});
+  VineSenseLoaded({
+    required this.stressLevel,
+    required this.keywords,
+    required this.songs,
+  });
 }
 
-class VineSenseErrorState extends VineSenseState {
+class VineSenseError extends VineSenseState {
   final String message;
-
-  VineSenseErrorState(this.message);
+  VineSenseError(this.message);
 }

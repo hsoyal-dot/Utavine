@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:utavine/common/widgets/appbar/custom_app_bar.dart';
-import 'package:utavine/presentation/vine_sense/bloc/vine_sense_bloc.dart';
-import 'package:utavine/presentation/vine_sense/bloc/vine_sense_event.dart';
+import 'package:utavine/presentation/vine_sense/bloc/vine_sense_cubit.dart';
 import 'package:utavine/presentation/vine_sense/bloc/vine_sense_state.dart';
-import 'package:utavine/presentation/vine_sense/widgets/song_list_widget.dart';
 
 class VineSenseScreen extends StatelessWidget {
   const VineSenseScreen({super.key});
@@ -12,33 +9,30 @@ class VineSenseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => VineSenseBloc()..add(FetchStressLevelEvent()),
+      create: (_) => VineSenseCubit()..fetchSongsFromMood(['calm', 'soothing', 'relaxing']),
       child: Scaffold(
-        appBar: CustomAppBar(title: Text(
-          'VineSense',
-          textAlign: TextAlign.left,
-          )),
-        body: BlocBuilder<VineSenseBloc, VineSenseState>(
+        appBar: AppBar(title: const Text('VineSense')),
+        body: BlocBuilder<VineSenseCubit, VineSenseState>(
           builder: (context, state) {
-                if (state is VineSenseLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is VineSenseLoadedState) {
-                  return Column(
-                    children: [
-                      Text('Stress Level: ${state.stressLevel}'),
-                      Text('Mood Keywords: ${state.keywords.join(', ')}'),
-                      Expanded(child: SongListWidget(songs: state.songs)),
-                    ],
+            if (state is VineSenseLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is VineSenseLoaded) {
+              return ListView.builder(
+                itemCount: state.songs.length,
+                itemBuilder: (context, index) {
+                  final song = state.songs[index];
+                  return ListTile(
+                    leading: Image.network(song.albumImage, width: 50, height: 50, fit: BoxFit.cover),
+                    title: Text(song.name),
+                    subtitle: Text(song.artists),
                   );
-                } else if (state is VineSenseErrorState) {
-                  return Center(child: Text(state.message));
-                } else {
-                  return const Center(
-                    child: Text(
-                      'Welcome to Vine Sense! Please wait while we load your data.',
-                    ),
-                  );
-                }
+                },
+              );
+            } else if (state is VineSenseError) {
+              return Center(child: Text(state.message));
+            } else {
+              return const SizedBox.shrink();
+            }
           },
         ),
       ),
