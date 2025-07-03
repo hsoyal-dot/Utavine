@@ -7,12 +7,12 @@ class VineSenseInitial extends VineSenseState {}
 class VineSenseLoading extends VineSenseState {}
 
 class VineSenseLoaded extends VineSenseState {
-  final double stressLevel;
+  final double? heartRate;
   final List<String> keywords;
   final List<SpotifySong> songs;
 
   VineSenseLoaded({
-    required this.stressLevel,
+    required this.heartRate,
     required this.keywords,
     required this.songs,
   });

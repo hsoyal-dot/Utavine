@@ -6,14 +6,18 @@ final class GeminiService {
   static final _apiKey = dotenv.env['GEMINI_API_KEY'];
   static final _baseUrl = dotenv.env['GEMINI_URL'];
 
-  static Future<List<String>> getMoodKeywords(double stress) async {
+  static Future<List<String>> getMoodKeywords(double? heartRate) async {
     final url = '$_baseUrl?key=$_apiKey';
     final promptTemplate = dotenv.env['GEMINI_PROMPT'];
-    // checking for the prompt was necessary just bcz null errors
+
     if (promptTemplate == null) {
       throw Exception("Missing Gemini prompt template.");
     }
-    final prompt = promptTemplate.replaceAll('{{stress}}', stress.toString());
+    final prompt = promptTemplate.replaceAll(
+      '{{heartRate}}',
+      heartRate.toString(),
+    );
+    print(prompt);
 
     final response = await http.post(
       Uri.parse(url),
@@ -29,7 +33,7 @@ final class GeminiService {
       }),
     );
 
-    // print('Gemini response: ${response.body}'); 
+    print('Gemini response: ${response.body}');
 
     final data = jsonDecode(response.body);
 

@@ -9,7 +9,7 @@ class VineSenseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => VineSenseCubit()..fetchSongsFromMood(['calm', 'soothing', 'relaxing']),
+      create: (_) => VineSenseCubit()..fetchSongsFromMood(),
       child: Scaffold(
         appBar: AppBar(title: const Text('VineSense')),
         body: BlocBuilder<VineSenseCubit, VineSenseState>(
