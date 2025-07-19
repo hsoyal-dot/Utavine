@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:utavine/common/widgets/loader/custom_loader.dart';
 import 'package:utavine/presentation/vine_sense/bloc/vine_sense_cubit.dart';
 import 'package:utavine/presentation/vine_sense/bloc/vine_sense_state.dart';
 
@@ -15,7 +16,7 @@ class VineSenseScreen extends StatelessWidget {
         body: BlocBuilder<VineSenseCubit, VineSenseState>(
           builder: (context, state) {
             if (state is VineSenseLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CustomLoader());
             } else if (state is VineSenseLoaded) {
               return ListView.builder(
                 itemCount: state.songs.length,

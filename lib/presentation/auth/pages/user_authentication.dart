@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:utavine/common/widgets/appbar/custom_app_bar.dart';
 import 'package:utavine/common/widgets/button/basic_app_button.dart';
 import 'package:utavine/core/configs/assets/app_images.dart';
 import 'package:utavine/core/configs/theme/app_colors.dart';
@@ -12,8 +11,6 @@ class UserAuthentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Back Button
-      appBar: const CustomAppBar(),
       body: Stack(
         children: [
           Padding(
