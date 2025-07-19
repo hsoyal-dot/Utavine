@@ -36,124 +36,142 @@ class _SignIpPageState extends State<SignIpPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => SignUpPage()),
+            MaterialPageRoute(builder: (_) => SignUpPage()),
           );
         },
       ),
-      appBar: CustomAppBar(
-        // title: Image.asset(
-        //   AppImages.logo,
-        //   height: 100,
-        //   width: 100,
-        //   ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            AuthTitle(title: 'Login'),
-            const SizedBox(height: 40),
-
-            AuthLabel(text: 'EMAIL'),
-            const SizedBox(height: 4),
-            UserInput(contr: _email),
-            const SizedBox(height: 20),
-
-            AuthLabel(text: 'PASSWORD'),
-            const SizedBox(height: 4),
-            UserInput(contr: _password),
-
-            const SizedBox(height: 20),
-
-            BasicAppButton(
-              onPressed: () async {
-                var result = await sl<SigninUsecase>().call(
-                  LoginUserReq(
-                    email: _email.text.toString(),
-                    password: _password.text.toString(),
-                  ),
-                );
-                if (!mounted) return;
-                result.fold(
-                  (l) {
-                    // handling error
-                    var snackbar = SnackBar(
-                      content: Text(
-                        'Please check your email and password again.',
-                        style: TextStyle(color: AppColors.white),
-                      ),
-                      backgroundColor: AppColors.danger,
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
-                  },
-                  (r) async {
-                    final user = FirebaseAuth.instance.currentUser;
-
-                    if (user != null && !user.emailVerified) {
-                      if (!mounted) return;
-
-                      showDialog(
-                        context: context,
-                        builder:
-                            (_) => AlertDialog(
-                              title: Text(
-                                "Email not verified",
-                              ),
-                              content: Text(
-                                "Please verify your email address before logging in.",
-                              ),
-                              
-                              actions: [
-                                TextButton(
-                                  onPressed: () async {
-                                    await user.sendEmailVerification();
-                                    if (!mounted) return;
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(
-                                          "Verification email sent",
-                                        ),
-                                        backgroundColor: AppColors.success,
-                                      ),
-                                    );
-                                    await FirebaseAuth.instance.signOut();
-                                  },
-                                  child: Text(
-                                    "Resend email",
-                                    style: TextStyle(color: AppColors.success),
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(color: AppColors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                      );
-                    } else if (user != null && user.emailVerified) {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const RootPage(),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AuthTitle(title: 'Login'),
+              const SizedBox(height: 40),
+              AuthLabel(text: 'EMAIL'),
+              const SizedBox(height: 4),
+              UserInput(contr: _email),
+              const SizedBox(height: 20),
+              AuthLabel(text: 'PASSWORD'),
+              const SizedBox(height: 4),
+              UserInput(contr: _password),
+              const SizedBox(height: 20),
+              BasicAppButton(
+                onPressed: () async {
+                  var result = await sl<SigninUsecase>().call(
+                    LoginUserReq(
+                      email: _email.text,
+                      password: _password.text,
+                    ),
+                  );
+                  if (!mounted) return;
+                  result.fold(
+                    (l) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'Please check your email and password again.',
+                            style: TextStyle(color: AppColors.white),
+                          ),
+                          backgroundColor: AppColors.danger,
                         ),
-                        (route) => false,
                       );
-                    }
-                  },
-                );
-              },
-              title: 'Login',
-              height: 60,
-              bgColor: AppColors.primary,
-            ),
-          ],
+                    },
+                    (r) async {
+                      final user = FirebaseAuth.instance.currentUser;
+                      if (user != null && !user.emailVerified) {
+                        showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                            title: const Text("Email not verified"),
+                            content: const Text(
+                              "Please verify your email address before logging in.",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () async {
+                                  await user.sendEmailVerification();
+                                  Navigator.of(context).pop();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Verification email sent"),
+                                      backgroundColor: AppColors.success,
+                                    ),
+                                  );
+                                  await FirebaseAuth.instance.signOut();
+                                },
+                                child: const Text(
+                                  "Resend email",
+                                  style: TextStyle(color: AppColors.success),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text(
+                                  "Cancel",
+                                  style: TextStyle(color: AppColors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else if (user != null && user.emailVerified) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const RootPage(),
+                          ),
+                          (route) => false,
+                        );
+                      }
+                    },
+                  );
+                },
+                title: 'Login',
+                height: 60,
+                bgColor: AppColors.primary,
+              ),
+              const SizedBox(height: 30),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.darkBg.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.4),
+                    width: 1.2,
+                  ),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Security Notice",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppColors.lgtGrey,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      "• Make sure your credentials are correct before logging in.\n"
+                      "• Verified email is mandatory for security access.\n"
+                      "• All user data is securely stored following best practices.",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.lgtGrey,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );
