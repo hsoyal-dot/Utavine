@@ -13,6 +13,7 @@ import 'package:utavine/presentation/auth/widgets/user_auth/auth_title.dart';
 import 'package:utavine/presentation/auth/widgets/user_auth/footer_navigation.dart';
 import 'package:utavine/presentation/auth/widgets/user_auth/user_input.dart';
 import 'package:utavine/presentation/root/root.dart';
+import 'package:utavine/presentation/vine_sense/pages/vine_sense_screen.dart';
 import 'package:utavine/service_locator.dart';
 
 class SignIpPage extends StatefulWidget {
@@ -121,7 +122,7 @@ class _SignIpPageState extends State<SignIpPage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => const RootPage(),
+                            builder: (_) => const VineSenseScreen(),
                           ),
                           (route) => false,
                         );
