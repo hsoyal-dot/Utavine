@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:utavine/common/widgets/button/basic_app_button.dart';
-import 'package:utavine/core/configs/assets/app_images.dart';
 import 'package:utavine/core/configs/theme/app_colors.dart';
-import 'package:utavine/presentation/choose_mode/pages/choose_mode_page.dart';
+import 'package:utavine/presentation/auth/pages/user_authentication.dart';
+import 'package:video_player/video_player.dart';
 
 class GetStarted extends StatefulWidget {
   const GetStarted({super.key});
@@ -14,12 +14,23 @@ class GetStarted extends StatefulWidget {
 }
 
 class _GetStartedState extends State<GetStarted> {
+  late VideoPlayerController _videoPlayerController;
   String _utaText = 'Utavine';
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
+    _videoPlayerController = VideoPlayerController.asset(
+        'assets/videos/intro_bg.mp4',
+      )
+      ..initialize().then((_) {
+        setState(() {});
+        _videoPlayerController.play();
+        _videoPlayerController.setVolume(0);
+        _videoPlayerController.setLooping(true);
+      });
+
     _timer = Timer.periodic(Duration(seconds: 2), (timer) {
       setState(() {
         _utaText = _utaText == 'Utavine' ? '歌vine' : 'Utavine';
@@ -30,6 +41,7 @@ class _GetStartedState extends State<GetStarted> {
   @override
   void dispose() {
     _timer?.cancel();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
@@ -38,14 +50,21 @@ class _GetStartedState extends State<GetStarted> {
     return Scaffold(
       body: Stack(
         children: [
+          _videoPlayerController.value.isInitialized
+              ? SizedBox.expand(
+                child: FittedBox(
+                  fit: BoxFit.cover,
+                  child: SizedBox(
+                    width: _videoPlayerController.value.size.width,
+                    height: _videoPlayerController.value.size.height,
+                    child: VideoPlayer(_videoPlayerController),
+                  ),
+                ),
+              )
+              : Container(color: Colors.black),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 40),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(AppImages.introBg),
-                fit: BoxFit.cover,
-              ),
-            ),
+            color: AppColors.darkBg.withValues(alpha: 0.5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -118,11 +137,41 @@ class _GetStartedState extends State<GetStarted> {
                 const SizedBox(height: 25),
                 BasicAppButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder:
-                            (BuildContext context) => const ChooseModePage(),
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 400),
+                        pageBuilder: (_, __, ___) => const UserAuthentication(),
+                        transitionsBuilder: (_, animation, __, child) {
+                          final offsetAnimation = Tween<Offset>(
+                            begin: const Offset(
+                              1.0,
+                              0.0,
+                            ),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeInOut,
+                            ),
+                          );
+                          final fadeAnimation = Tween<double>(
+                            begin: 0.0,
+                            end: 1.0,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeIn,
+                            ),
+                          );
+                          return SlideTransition(
+                            position: offsetAnimation,
+                            child: FadeTransition(
+                              opacity: fadeAnimation,
+                              child: child,
+                            ),
+                          );
+                        },
                       ),
                     );
                   },

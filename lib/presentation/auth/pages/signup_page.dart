@@ -13,6 +13,7 @@ import 'package:utavine/service_locator.dart';
 
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
+
   final TextEditingController _fullName = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
@@ -27,13 +28,12 @@ class SignUpPage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (BuildContext context) => SignIpPage()),
+            MaterialPageRoute(builder: (_) => const SignIpPage()),
           );
         },
       ),
-      appBar: CustomAppBar(),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: SafeArea(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,25 +60,24 @@ class SignUpPage extends StatelessWidget {
                 onPressed: () async {
                   var result = await sl<SignupUsecase>().call(
                     CreateUserReq(
-                      fullName: _fullName.text.toString(),
-                      email: _email.text.toString(),
-                      password: _password.text.toString(),
+                      fullName: _fullName.text.trim(),
+                      email: _email.text.trim(),
+                      password: _password.text,
                     ),
                   );
                   result.fold(
                     (l) {
-                      // handling error
-                      var snackbar = SnackBar(
-                        content: Text(
-                          'Kindly provide valid credentials.',
-                          style: const TextStyle(color: AppColors.white),
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            'Kindly provide valid credentials.',
+                            style: TextStyle(color: AppColors.white),
+                          ),
+                          backgroundColor: AppColors.danger,
                         ),
-                        backgroundColor: AppColors.danger,
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(snackbar);
                     },
                     (r) {
-                      // handling success and sending verif. email
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text(
@@ -90,10 +89,9 @@ class SignUpPage extends StatelessWidget {
                       );
                       Future.delayed(const Duration(seconds: 4), () {
                         Navigator.pushAndRemoveUntil(
-                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => SignIpPage(),
+                            builder: (_) => const SignIpPage(),
                           ),
                           (route) => false,
                         );
@@ -105,6 +103,48 @@ class SignUpPage extends StatelessWidget {
                 height: 60,
                 bgColor: AppColors.primary,
               ),
+
+              const SizedBox(height: 30),
+
+              // Security Notice Box
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: AppColors.darkBg.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.4),
+                    width: 1.2,
+                  ),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Registration Policy",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: AppColors.lgtGrey,
+                      ),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      "• By registering, you agree to our Terms and Privacy Policy.\n"
+                      "• We comply with data protection regulations.\n"
+                      "• No personal data is shared with third-party services.\n"
+                      "• You can delete your account anytime from settings.",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.lgtGrey,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 30),
             ],
           ),
         ),
